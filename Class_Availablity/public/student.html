@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student — Class Availability Viewer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="top">
+      <h1>Class Availability — Student</h1>
+      <a class="link-button" href="/">Admin</a>
+    </header>
+
+    <section class="student-panel">
+      <label for="studentClassSelect">Select Class / Room</label>
+      <select id="studentClassSelect">
+        <option value="">-- Select a class --</option>
+        <option value="DL001">DL001</option>
+        <option value="DL002">DL002</option>
+        <option value="AL001">AL001</option>
+        <option value="AL002">AL002</option>
+        <option value="AL004">AL004</option>
+        <option value="LAB2">LAB2</option>
+        <option value="LAB3">LAB3</option>
+      </select>
+
+      <div class="row">
+        <button id="checkFreeBtn" class="btn primary">Show Free Slots</button>
+        <button id="refreshBtn" class="btn">Refresh</button>
+      </div>
+
+      <div id="freeSlots" style="margin-top:18px"></div>
+      <hr style="margin:20px 0">
+      <p class="small muted">Note: This view is read-only. Contact admin to change availability.</p>
+    </section>
+  </div>
+
+  <script>
+    // Student page script (small and self-contained)
+    const ALL_SLOTS = [
+      "08:00-09:00","09:00-10:00","10:00-11:00",
+      "11:00-12:00","12:00-13:00","13:00-14:00",
+      "14:00-15:00","15:00-16:00","16:00-17:00"
+    ];
+
+    const studentClassSelect = document.getElementById('studentClassSelect');
+    const checkFreeBtn = document.getElementById('checkFreeBtn');
+    const freeSlotsDiv = document.getElementById('freeSlots');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    async function showFreeSlots() {
+      const classCode = studentClassSelect.value;
+      if (!classCode) return alert('Select a class');
+
+      try {
+        const res = await fetch('/api/free-slots?classCode=' + encodeURIComponent(classCode));
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        const booked = new Set(data.booked || []);
+        const free = ALL_SLOTS.filter(s => !booked.has(s));
+
+        let html = `<h3>Availability for ${classCode}</h3>`;
+        html += '<div class="slot-grid">';
+        // show booked and free visually
+        ALL_SLOTS.forEach(slot => {
+          if (booked.has(slot)) {
+            html += `<div class="slot blocked">${slot}<div class="tag">Booked</div></div>`;
+          } else {
+            html += `<div class="slot free">${slot}<div class="tag">Free</div></div>`;
+          }
+        });
+        html += '</div>';
+
+        freeSlotsDiv.innerHTML = html;
+      } catch (e) {
+        console.error(e);
+        alert('Could not load availability — try again.');
+      }
+    }
+
+    checkFreeBtn.addEventListener('click', showFreeSlots);
+    refreshBtn.addEventListener('click', () => location.reload());
+  </script>
+</body>
+</html>
