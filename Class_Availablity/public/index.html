@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Class Availability Decoder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Class Availability Decoder</h1>
+
+    <!-- TEACHER PANEL -->
+    <div class="teacher-panel">
+      <h2>Teacher Panel</h2>
+      <label>Teacher Name</label>
+      <input id="teacherInput" type="text" placeholder="Enter teacher name" />
+
+      <label>Select Class</label>
+      <select id="classSelect">
+        <option value="">-- Select Class --</option>
+        <option value="dl001">DL001</option>
+        <option value="dl002">DL002</option>
+        <option value="al001">AL001</option>
+        <option value="al002">AL002</option>
+        <option value="al004">AL004</option>
+        <option value="lab2">LAB2</option>
+        <option value="lab3">LAB3</option>
+      </select>
+
+      <label>Select Time Slots</label>
+      <div id="timeslots" class="grid"></div>
+
+      <div class="buttons">
+        <button id="saveBtn">Save</button>
+        <button id="updateBtn" disabled>Update Selected</button>
+        <button id="clearBtn">Clear Selection</button>
+      </div>
+
+      <div id="editingInfo" style="margin-top:8px;color:#666;font-size:0.9rem"></div>
+    </div>
+
+    <!-- STUDENT PANEL -->
+    <div class="student-panel">
+      <h2>Student View</h2>
+      <label>Select Class to See Free Slots</label>
+      <select id="studentClassSelect">
+        <option value="">-- Select Class --</option>
+        <option value="dl001">DL001</option>
+        <option value="dl002">DL002</option>
+        <option value="al001">AL001</option>
+        <option value="al002">AL002</option>
+        <option value="al004">AL004</option>
+        <option value="lab2">LAB2</option>
+        <option value="lab3">LAB3</option>
+      </select>
+      <div id="studentSlots" class="grid"></div>
+    </div>
+
+    <h2>Saved Availabilities</h2>
+    <div id="availabilityList"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
