@@ -56,6 +56,9 @@ label {
   color: #333;
 }
 
+.row {
+    margin: 20px;
+}
 input[type="text"],
 select {
   width: 100%;
